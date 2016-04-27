@@ -62,7 +62,12 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
 
     @Override
     public void onResult(String result) {
-        displayTextView.setText(result);
+        displayTextView.setText(String.valueOf(result));
+    }
+
+    @Override
+    public void onClearCalculation() {
+        displayTextView.setText("");
     }
 
     static final ButterKnife.Setter<View, Boolean> ENABLED = new ButterKnife.Setter<View, Boolean>() {

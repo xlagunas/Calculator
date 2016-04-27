@@ -1,31 +1,28 @@
 package cat.xlagunas.calculator.utils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import cat.xlagunas.calculator.Calculable;
 
 /**
  * Created by xlagunas on 27/04/16.
  */
-public class Calculator {
+public class Calculator implements Calculable {
+    // zero-width positive lookahead, that splits the string in substrings
+    // whenever it finds add or substract character, upon that, as it is a positive lookahead,
+    // it includes the sign in the resulting substring
+    private final static String SPLITTER_REGEX = "(?=[-+])";
 
     public Calculator() {
     }
 
-    public double calculate(String expression){
-        double calculation = 0;
-        //isPositive is the sign of the numeric value, by default first one is set to true
-        boolean isPositive = true;
+    @Override
+    public double doCalculation(String expression) {
+        String[] splittedOperation = expression.split(SPLITTER_REGEX);
 
-        Pattern p = Pattern.compile("[+-]");
-        Matcher matcher = p.matcher(expression);
-
-        while (matcher.find()) {
-            System.out.print("Start index: " + matcher.start());
-            System.out.print(" End index: " + matcher.end());
-            System.out.println(" Found: " + matcher.group());
+        double addition = 0;
+        for (String value : splittedOperation) {
+            addition += Double.parseDouble(value);
         }
 
-        //Fake return value as from now
-        return 10;
+        return addition;
     }
 }

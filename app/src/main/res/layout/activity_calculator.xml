@@ -16,7 +16,8 @@
         android:gravity="right"
         android:textSize="25sp"
         android:padding="16dp"
-        tools:text="123123123123123213" />
+        tools:text="123123123123123213"
+        android:text="0.00"/>
 
 
     <Button
