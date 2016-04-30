@@ -20,6 +20,12 @@ public class Calculator implements Calculable {
 
         double addition = 0;
         for (String value : splittedOperation) {
+            // for this implementation we accept "." as 0." value which should be computable
+            // so a small transformation should be done just
+            if (value.length() == 1 && ".".equals(value)){
+                value = "0.";
+            }
+
             addition += Double.parseDouble(value);
         }
 

@@ -2,7 +2,6 @@ package cat.xlagunas.calculator;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,11 +12,12 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import cat.xlagunas.calculator.presenter.CalculatorPresenter;
 import cat.xlagunas.calculator.view.CalculatorView;
 
 public class CalculatorActivity extends AppCompatActivity implements CalculatorView {
+
+    private final static String DISPLAY_TEXT = "display_text";
 
     @BindView(R.id.result_text_view)
     TextView displayTextView;
@@ -89,4 +89,19 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
         }
     };
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(DISPLAY_TEXT, displayTextView.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String outputState = savedInstanceState.getString(DISPLAY_TEXT);
+        if (outputState != null) {
+            displayTextView.setText(outputState);
+            presenter.validate(outputState);
+        }
+    }
 }

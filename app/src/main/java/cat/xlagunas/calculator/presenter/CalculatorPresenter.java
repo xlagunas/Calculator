@@ -14,7 +14,7 @@ public class CalculatorPresenter {
     private final Validator validator;
     private final Calculable calculable;
 
-    private boolean isResultDisplayed = true;
+    private boolean isResultDisplayed = false;
 
 
     public CalculatorPresenter(CalculatorView view) {
@@ -24,16 +24,14 @@ public class CalculatorPresenter {
     }
 
     public void validate(String expression) {
-        boolean isValidExpression = validator.shouldDisableOperators(expression);
-
-        if (isResultDisplayed && !isValidExpression) {
-            view.onClearCalculation();
-            expression = expression.substring(expression.length() - 1);
-        }
-
+        boolean disableOperators = validator.shouldDisableOperators(expression);
+        //check if we should clear the display or keep appending the added value to the full expression
+        expression = updateExpression(disableOperators, expression);
+        //notify the view of the new expression
         view.onResult(expression);
 
-        if (validator.shouldDisableOperators(expression)) {
+        //Check if the sign operators must be disabled or not.
+        if (disableOperators) {
             view.disableOperators();
             view.enableDecimalOperator();
         } else {
@@ -51,5 +49,14 @@ public class CalculatorPresenter {
         double calculation = calculable.doCalculation(expression);
         view.onResult(String.valueOf(calculation));
         isResultDisplayed = true;
+    }
+
+    private String updateExpression(boolean disableOperators, String expression){
+        if (isResultDisplayed && !disableOperators) {
+            view.onClearCalculation();
+            expression = expression.substring(expression.length() - 1);
+        }
+
+        return expression;
     }
 }
