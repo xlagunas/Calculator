@@ -8,4 +8,7 @@ public interface CalculatorView {
     void enableOperators();
     void onResult(String result);
     void onClearCalculation();
+
+    void enableDecimalOperator();
+    void disableDecimalOperator();
 }

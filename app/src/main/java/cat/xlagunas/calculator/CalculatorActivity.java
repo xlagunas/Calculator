@@ -22,6 +22,9 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
     @BindView(R.id.result_text_view)
     TextView displayTextView;
 
+    @BindView(R.id.button_decimal)
+    Button decimalButton;
+
     @BindViews({R.id.button_add, R.id.button_substract, R.id.button_result})
     List<Button> operators;
 
@@ -70,9 +73,20 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
         displayTextView.setText("");
     }
 
+    @Override
+    public void enableDecimalOperator() {
+        decimalButton.setEnabled(true);
+    }
+
+    @Override
+    public void disableDecimalOperator() {
+        decimalButton.setEnabled(false);
+    }
+
     static final ButterKnife.Setter<View, Boolean> ENABLED = new ButterKnife.Setter<View, Boolean>() {
         @Override public void set(View view, Boolean value, int index) {
             view.setEnabled(value);
         }
     };
+
 }

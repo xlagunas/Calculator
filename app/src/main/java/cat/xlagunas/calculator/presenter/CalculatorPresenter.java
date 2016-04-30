@@ -24,7 +24,7 @@ public class CalculatorPresenter {
     }
 
     public void validate(String expression) {
-        boolean isValidExpression = validator.validate(expression);
+        boolean isValidExpression = validator.shouldDisableOperators(expression);
 
         if (isResultDisplayed && !isValidExpression) {
             view.onClearCalculation();
@@ -33,10 +33,15 @@ public class CalculatorPresenter {
 
         view.onResult(expression);
 
-        if (validator.validate(expression)) {
+        if (validator.shouldDisableOperators(expression)) {
             view.disableOperators();
+            view.enableDecimalOperator();
         } else {
             view.enableOperators();
+        }
+
+        if (validator.shouldDisableDecimalSign(expression)){
+            view.disableDecimalOperator();
         }
 
         isResultDisplayed = false;

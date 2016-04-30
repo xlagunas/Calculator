@@ -7,7 +7,7 @@ import cat.xlagunas.calculator.Calculable;
  */
 public class Calculator implements Calculable {
     // zero-width positive lookahead, that splits the string in substrings
-    // whenever it finds add or substract character, upon that, as it is a positive lookahead,
+    // whenever it finds an add or substract character. As it is a positive lookahead,
     // it includes the sign in the resulting substring
     private final static String SPLITTER_REGEX = "(?=[-+])";
 
