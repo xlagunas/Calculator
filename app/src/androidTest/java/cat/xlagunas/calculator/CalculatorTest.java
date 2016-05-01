@@ -20,6 +20,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class CalculatorTest {
 
     private final static String EXPRESSION_STRING = "2+2";
+    private final static String EXPECTED_RESULT = "4.0";
     @Rule
     public ActivityTestRule<CalculatorActivity> mActivityRule = new ActivityTestRule<>(
             CalculatorActivity.class);
@@ -35,7 +36,7 @@ public class CalculatorTest {
 
         onView(withId(R.id.button_result)).perform(click());
 
-        onView(withId(R.id.result_text_view)).check(matches(withText("4")));
+        onView(withId(R.id.result_text_view)).check(matches(withText(EXPECTED_RESULT)));
 
     }
 

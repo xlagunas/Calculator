@@ -14,7 +14,7 @@ public class CalculatorPresenter {
     private final Validator validator;
     private final Calculable calculable;
 
-    private boolean isResultDisplayed = false;
+    private boolean isResultDisplayed = true;
 
 
     public CalculatorPresenter(CalculatorView view) {
