@@ -46,9 +46,14 @@ public class CalculatorPresenter {
     }
 
     public void calculate(String expression) {
-        double calculation = calculable.doCalculation(expression);
-        view.onResult(String.valueOf(calculation));
-        isResultDisplayed = true;
+        try {
+            double calculation = calculable.doCalculation(expression);
+            view.onResult(String.valueOf(calculation));
+        } catch (NumberFormatException e){
+            view.onResult("E");
+        } finally {
+            isResultDisplayed = true;
+        }
     }
 
     private String updateExpression(boolean disableOperators, String expression){

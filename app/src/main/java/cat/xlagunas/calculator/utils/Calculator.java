@@ -15,7 +15,7 @@ public class Calculator implements Calculable {
     }
 
     @Override
-    public double doCalculation(String expression) {
+    public double doCalculation(String expression) throws NumberFormatException {
         String[] splittedOperation = expression.split(SPLITTER_REGEX);
 
         double addition = 0;

@@ -11,7 +11,7 @@ public class Validator {
 
     private final static String LAST_NUMBER_VALIDATOR = ".([^+-]*)$";
 
-    //Validates that the expression ends wether with a + or - sign (this enables/disables) operational buttons
+    //Validates that the expression ends with a + or - sign (this enables/disables) operational buttons
     public boolean shouldDisableOperators(String expression){
         Pattern p = Pattern.compile(REGEX_VALIDATOR);
         Matcher m = p.matcher(expression);
