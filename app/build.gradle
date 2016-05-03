@@ -12,6 +12,9 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -20,8 +23,9 @@ android {
         }
     }
 
-    defaultConfig {
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    dexOptions {
+        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+        preDexLibraries = preDexEnabled && !travisBuild
     }
 }
 
@@ -42,22 +46,4 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:0.4.1'
     androidTestCompile 'com.android.support.test:rules:0.4.1'
     androidTestCompile "com.android.support.test.espresso:espresso-core:2.2.1"
-
-//    androidTestCompile ('com.android.support:support-annotations:23.3.0'){
-//        exclude group: 'com.android.support', module: 'support-annotations'
-//    }
-//    androidTestCompile ('com.android.support.test:testing-support-lib:0.1'){
-//        exclude group: 'com.android.support', module: 'support-annotations'
-//    }
-//    androidTestCompile ('com.android.support.test:runner:0.4.1'){
-//        exclude group: 'com.android.support', module: 'support-annotations'
-//    }
-//
-//    androidTestCompile ('com.android.support.test:rules:0.4.1'){
-//        exclude group: 'com.android.support', module: 'support-annotations'
-//    }
-//    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.1'){
-//        exclude group: 'com.android.support', module: 'support-annotations'
-//    }
-
 }

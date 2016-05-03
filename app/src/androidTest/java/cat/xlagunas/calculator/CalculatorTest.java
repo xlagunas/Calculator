@@ -21,9 +21,12 @@ public class CalculatorTest {
 
     private final static String EXPRESSION_STRING = "2+2";
     private final static String EXPECTED_RESULT = "4.0";
+
+
     @Rule
     public ActivityTestRule<CalculatorActivity> mActivityRule = new ActivityTestRule<>(
             CalculatorActivity.class);
+
 
     @Test
     public void changeText_sameActivity() {
