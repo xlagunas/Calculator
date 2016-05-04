@@ -1,5 +1,6 @@
 package cat.xlagunas.calculator.presenter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,10 +28,11 @@ public class CalculatorPresenter {
         this.validatable = validable;
     }
 
-    public void onRestoreInstance(String persistedOperation){
+    public void onRestoreInstance(String persistedOperation, List<String> operationsStack){
         isResultDisplayed = false;
         isError = "Error!".equals(persistedOperation);
 
+        this.operationsStack = operationsStack;
         validate(persistedOperation);
     }
 
@@ -68,6 +70,17 @@ public class CalculatorPresenter {
         }
     }
 
+    public boolean onBackPressed(){
+        if (operationsStack != null && !operationsStack.isEmpty()){
+            //pop the last item in the array
+            String lastOperation = operationsStack.remove(operationsStack.size()-1);
+            view.onResult(lastOperation);
+            return true;
+        }
+
+        return false;
+    }
+
     private String updateExpression(boolean disableOperators, String expression){
         if (isResultDisplayed && !disableOperators || isError) {
             view.onClearCalculation();
@@ -79,20 +92,13 @@ public class CalculatorPresenter {
 
     private void addExpressionToStack(String expression){
         if (operationsStack == null){
-            operationsStack = new LinkedList<>();
+            operationsStack = new ArrayList<>();
             operationsStack.add("0.00");
         }
         operationsStack.add(expression);
     }
 
-    public boolean onBackPressed(){
-        if (operationsStack != null && !operationsStack.isEmpty()){
-            //pop the last item in the array
-            String lastOperation = operationsStack.remove(operationsStack.size()-1);
-            view.onResult(lastOperation);
-            return true;
-        }
-
-        return false;
+    public List<String> getOperationsStack() {
+        return operationsStack;
     }
 }
