@@ -3,29 +3,19 @@ package cat.xlagunas.calculator;
 import org.junit.Before;
 import org.junit.Test;
 
-import cat.xlagunas.calculator.utils.Calculator;
 import cat.xlagunas.calculator.utils.Validator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
- * To work on unit tests, switch the Test Artifact in the Build Variants view.
+ * Created by xlagunas on 4/05/16.
  */
-public class ExampleUnitTest {
-
-    private Calculable calculable;
+public class ValidatorUnitTest {
     private Validator validator;
-
 
     @Before
     public void setUp(){
-        calculable = new Calculator();
         validator = new Validator();
-    }
-
-    @Test
-    public void addition_isCorrect() throws Exception {
-        assertTrue(4d == calculable.doCalculation("2+2"));
     }
 
     @Test
@@ -36,5 +26,10 @@ public class ExampleUnitTest {
     @Test
     public void validate_disableOperatorSigns() throws Exception {
         assertTrue(validator.shouldDisableOperators("123+434+"));
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void checkIllegalNumberException() {
+        validator.shouldDisableDecimalSign("132..");
     }
 }
