@@ -1,6 +1,5 @@
 package cat.xlagunas.calculator;
 
-import android.support.test.espresso.ViewAction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -25,8 +24,11 @@ public class CalculatorTest {
     public ActivityTestRule<CalculatorActivity> mActivityRule = new ActivityTestRule<>(
             CalculatorActivity.class);
 
+    /**
+     * Initial setup for the tests. The user should input the initial operation proposed in the exercise
+     */
     @Before
-    public void baseTest(){
+    public void setUp(){
         onView(withId(R.id.button_one)).perform(click());
         onView(withId(R.id.button_two)).perform(click());
         onView(withId(R.id.button_add)).perform(click());
@@ -40,16 +42,24 @@ public class CalculatorTest {
         onView(withId(R.id.button_result)).perform(click());
     }
 
+    /**
+     * This test verifies that the user sees the right result after the user has performed an
+     * operation, this operation is the one stated in the written exercise
+     * then the result should be carried on. This test, checks that rule
+     */
     @Test
     public void testDescriptionUseCase(){
         //Check that after the setup operations the result meet whatever we expect
         onView(withId(R.id.result_text_view)).check(matches(withText("70.0")));
     }
 
+    /**
+     * As the written exercise states, after performing a computation, if + o - sign is pressed,
+     * then the result should be carried on. This test, checks that rule
+     */
     @Test
     public void testAnswerCarryOnUseCase(){
-        //Check that after an operation, if + or - sign is required, we carry on the previous result
-//        + 1 6 - 2
+
         onView(withId(R.id.button_add)).perform(click());
         onView(withId(R.id.button_one)).perform(click());
         onView(withId(R.id.button_six)).perform(click());
@@ -62,6 +72,10 @@ public class CalculatorTest {
         onView(withId(R.id.result_text_view)).check(matches(withText("84.0")));
     }
 
+    /**
+     * This test checks the opposite use case than the previous one. After a computation is made,
+     * if the user doesn't carry on, should start a new operation
+     */
     @Test
     public void testResetOperationCase() {
         onView(withId(R.id.button_one)).perform(click());
