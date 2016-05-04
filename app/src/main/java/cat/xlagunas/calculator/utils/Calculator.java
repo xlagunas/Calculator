@@ -32,7 +32,7 @@ public class Calculator implements Calculable {
         for (String value : splittedOperation) {
             // for this implementation it is accepted "." as 0." value which should be computable
             // so a small transformation should be done
-            if (value.length() == 1 && ".".equals(value)){
+            if (value.length() == 1 && ".".equals(value) || "".equals(value)){
                 value = "0.";
             }
 

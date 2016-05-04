@@ -80,6 +80,7 @@ public class CalculatorPresenter {
     private void addExpressionToStack(String expression){
         if (operationsStack == null){
             operationsStack = new LinkedList<>();
+            operationsStack.add("0.00");
         }
         operationsStack.add(expression);
     }
@@ -88,7 +89,7 @@ public class CalculatorPresenter {
         if (operationsStack != null && !operationsStack.isEmpty()){
             //pop the last item in the array
             String lastOperation = operationsStack.remove(operationsStack.size()-1);
-            validate(lastOperation);
+            view.onResult(lastOperation);
             return true;
         }
 
