@@ -3,10 +3,12 @@ package cat.xlagunas.calculator.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import cat.xlagunas.calculator.Validable;
+
 /**
  * Created by xlagunas on 27/04/16.
  */
-public class Validator {
+public class Validator implements Validable {
     private final static String REGEX_VALIDATOR = "[+-]$";
 
     private final static String LAST_NUMBER_VALIDATOR = ".([^+-]*)$";
@@ -17,6 +19,7 @@ public class Validator {
      * @param expression mathematical expression to be evaluated
      * @return true if the last number in the operation is an operation (+ -) sign
      */
+    @Override
     public boolean shouldDisableOperators(String expression){
         Pattern p = Pattern.compile(REGEX_VALIDATOR);
         Matcher m = p.matcher(expression);
@@ -29,6 +32,7 @@ public class Validator {
      * @param expression mathematical expression to be evaluated
      * @return true if the last number in the operation is already a decimal number
      */
+    @Override
     public boolean shouldDisableDecimalSign(String expression) {
         Pattern p = Pattern.compile(LAST_NUMBER_VALIDATOR);
         Matcher m = p.matcher(expression);

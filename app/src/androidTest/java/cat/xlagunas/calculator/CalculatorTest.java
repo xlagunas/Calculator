@@ -1,17 +1,25 @@
 package cat.xlagunas.calculator;
 
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.view.View;
 
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.registerLooperAsIdlingResource;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -87,5 +95,44 @@ public class CalculatorTest {
         onView(withId(R.id.button_result)).perform(click());
 
         onView(withId(R.id.result_text_view)).check(matches(withText("2.0")));
+    }
+
+    @Test
+    public void testOrientationChangeCase() throws InterruptedException {
+        onView(isRoot()).perform(OrientationChangeAction.orientationLandscape());
+
+
+//        onView(withId(R.id.result_text_view)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        onView(isRoot()).perform(waitFor(5000));
+        testDescriptionUseCase();
+
+    }
+
+    public static ViewAction waitFor(final long millis)
+    {
+        return new ViewAction()
+        {
+            @Override
+            public Matcher<View> getConstraints()
+            {
+                return isRoot();
+            }
+
+            @Override
+            public String getDescription()
+            {
+                return "wait for a specific time: " + millis + " millis.";
+            }
+
+            @Override
+            public void perform(final UiController uiController, final View view)
+            {
+                uiController.loopMainThreadUntilIdle();
+                final long startTime = System.currentTimeMillis();
+                final long endTime = startTime + millis;
+
+                while (System.currentTimeMillis() < endTime);
+            }
+        };
     }
 }

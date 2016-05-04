@@ -13,6 +13,8 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cat.xlagunas.calculator.presenter.CalculatorPresenter;
+import cat.xlagunas.calculator.utils.Calculator;
+import cat.xlagunas.calculator.utils.Validator;
 import cat.xlagunas.calculator.view.CalculatorView;
 
 public class CalculatorActivity extends AppCompatActivity implements CalculatorView {
@@ -36,7 +38,7 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
 
         setContentView(R.layout.activity_calculator);
         ButterKnife.bind(this);
-        presenter = new CalculatorPresenter(this);
+        presenter = new CalculatorPresenter(this, new Calculator(), new Validator());
     }
 
     @OnClick({R.id.button_zero, R.id.button_one, R.id.button_two, R.id.button_three, R.id.button_four,
@@ -67,6 +69,12 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
     @Override
     public void onResult(String result) {
         displayTextView.setText(String.valueOf(result));
+    }
+
+    @Override
+    public void onError() {
+        displayTextView.setText("Error!");
+        disableOperators();
     }
 
     @Override
@@ -102,7 +110,16 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
         String outputState = savedInstanceState.getString(DISPLAY_TEXT);
         if (outputState != null) {
             displayTextView.setText(outputState);
-            presenter.validate(outputState);
+            presenter.onRestoreInstance(outputState);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //initially delegate the backpress action to the presenter, if it has nothing to do,
+        // then handle as system would
+        if (!presenter.onBackPressed()) {
+            super.onBackPressed();
         }
     }
 }
