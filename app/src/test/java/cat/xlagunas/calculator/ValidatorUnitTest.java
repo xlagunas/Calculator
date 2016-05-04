@@ -27,9 +27,4 @@ public class ValidatorUnitTest {
     public void validate_disableOperatorSigns() throws Exception {
         assertTrue(validator.shouldDisableOperators("123+434+"));
     }
-
-    @Test(expected = NumberFormatException.class)
-    public void checkIllegalNumberException() {
-        validator.shouldDisableDecimalSign("132..");
-    }
 }

@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import cat.xlagunas.calculator.utils.Calculator;
-import cat.xlagunas.calculator.utils.Validator;
 
 import static org.junit.Assert.*;
 
