@@ -13,7 +13,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "cat.xlagunas.calculator.AndroidRunner"
+        testInstrumentationRunner "cat.xlagunas.calculator.CustomJUnitRunner"
 
     }
     buildTypes {
