@@ -16,10 +16,18 @@ dependencies:
         - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.3"
 
     override:
-        - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-19.1.0,android-19,extra-google-m2repository,extra-google-google_play_services,extra-android-support
+        - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-19.1.0,android-21,extra-google-m2repository,extra-google-google_play_services,extra-android-support
         - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
 
 test:
     override:
-        - (./gradlew assemble):
+        - (./gradlew assemble -PdisablePreDex):
             timeout: 360
+        - cp -r ${HOME}/${CIRCLE_PROJECT_REPONAME}/app/build/outputs/apk/ $CIRCLE_ARTIFACTS
+        - emulator -avd circleci-android21 -no-audio -no-window:
+            background: true
+            parallel: true
+        # wait for it to have booted
+        - circle-android wait-for-boot
+        # run tests  against the emulator.
+        - ./gradlew connectedAndroidTest
