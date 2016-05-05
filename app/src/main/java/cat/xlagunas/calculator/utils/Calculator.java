@@ -14,15 +14,25 @@ public class Calculator implements Calculable {
     public Calculator() {
     }
 
+    /**
+     * This method extracts every number in the expression and makes the requested operations.
+     * To emulate calculator behaviour, the validator will accept operations such as 0 + . because
+     * otherwise the user wouldn't be allowed to write the whole expression. Therefore, when the user
+     * requests a calculation, if the numbers are not well formatted will be informed
+     *
+     * @param expression The operation to be executed
+     * @return the result of the operation
+     * @throws NumberFormatException if any number is not well formatted
+     */
     @Override
-    public double doCalculation(String expression) {
+    public double doCalculation(String expression) throws NumberFormatException {
         String[] splittedOperation = expression.split(SPLITTER_REGEX);
 
         double addition = 0;
         for (String value : splittedOperation) {
-            // for this implementation we accept "." as 0." value which should be computable
-            // so a small transformation should be done just
-            if (value.length() == 1 && ".".equals(value)){
+            // for this implementation it is accepted "." as 0." value which should be computable
+            // so a small transformation should be done
+            if (value.length() == 1 && ".".equals(value) || "".equals(value)){
                 value = "0.";
             }
 

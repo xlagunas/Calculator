@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -13,11 +14,14 @@ import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cat.xlagunas.calculator.presenter.CalculatorPresenter;
+import cat.xlagunas.calculator.utils.Calculator;
+import cat.xlagunas.calculator.utils.Validator;
 import cat.xlagunas.calculator.view.CalculatorView;
 
 public class CalculatorActivity extends AppCompatActivity implements CalculatorView {
 
     private final static String DISPLAY_TEXT = "display_text";
+    private final static String OPERATIONS_STACK = "operations_stack";
 
     @BindView(R.id.result_text_view)
     TextView displayTextView;
@@ -33,9 +37,10 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_calculator);
         ButterKnife.bind(this);
-        presenter = new CalculatorPresenter(this);
+        presenter = new CalculatorPresenter(this, new Calculator(), new Validator());
     }
 
     @OnClick({R.id.button_zero, R.id.button_one, R.id.button_two, R.id.button_three, R.id.button_four,
@@ -69,6 +74,12 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
     }
 
     @Override
+    public void onError() {
+        displayTextView.setText("Error!");
+        disableOperators();
+    }
+
+    @Override
     public void onClearCalculation() {
         displayTextView.setText("");
     }
@@ -93,15 +104,27 @@ public class CalculatorActivity extends AppCompatActivity implements CalculatorV
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(DISPLAY_TEXT, displayTextView.getText().toString());
+        //ugly but needed casting
+        outState.putParcelableArrayList(OPERATIONS_STACK, (ArrayList) presenter.getOperationsStack());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         String outputState = savedInstanceState.getString(DISPLAY_TEXT);
+        List<String> operationsStack = (ArrayList) savedInstanceState.getParcelableArrayList(OPERATIONS_STACK);
         if (outputState != null) {
             displayTextView.setText(outputState);
-            presenter.validate(outputState);
+            presenter.onRestoreInstance(outputState, operationsStack);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //initially delegate the backpress action to the presenter, if it has nothing to do,
+        // then handle as system would
+        if (!presenter.onBackPressed()) {
+            super.onBackPressed();
         }
     }
 }
