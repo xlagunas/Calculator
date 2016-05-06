@@ -8,4 +8,5 @@ and keeps track of all the operations being made (popped out when the user press
 It is bundled with both Espresso tests and JUnit tests.
 And also it's integrated in a CI environment (initially was Travis, later on has been moved to circleCI)
 
+https://raw.githubusercontent.com/xlagunas/Calculator/readme/images/calc.gif
 
